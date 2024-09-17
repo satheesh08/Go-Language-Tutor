@@ -768,3 +768,371 @@ default:
 ```
 
 ---
+
+
+#### 1. Basic Function Call Example
+
+```go
+// Package declaration
+package main
+
+// Import the fmt package for formatted I/O operations
+import (
+	"fmt"
+)
+
+// Defining a simple function f1
+func f1() {
+	// Currently empty function
+}
+
+// Main function where the execution starts
+func main() {
+	f1() // Calling f1 function
+}
+```
+
+---
+
+#### 2. Single Return Function
+
+```go
+// Define a function myFunction that takes two integers as arguments
+// and returns their sum.
+func myFunction(x int, y int) int {
+	return x + y // Returning the sum of x and y
+}
+
+func main() {
+	// Calling myFunction with 1 and 2 as arguments, and printing the result
+	fmt.Println(myFunction(1, 2)) // Output: 3
+}
+```
+
+---
+
+#### 3. Function with Named Return Value
+
+```go
+// This example shows how to use a named return value.
+// In this case, result is an int, and we assign it within the function.
+
+func myFunction(x int, y int) (result int) {
+	result = x + y // Assigning result the value of x + y
+	return         // The return statement will return the value of result
+}
+
+func main() {
+	// The function will still return the sum of 1 and 2
+	fmt.Println(myFunction(1, 2)) // Output: 3
+}
+```
+
+---
+
+#### 4. Multiple Return Values
+
+```go
+// This function returns two values: an integer and a string.
+// It doubles the integer and appends "World!" to the string.
+
+func myFunction(x int, y string) (result int, txt1 string) {
+	result = x + x           // result is double the value of x
+	txt1 = y + " World!"     // txt1 is y appended with " World!"
+	return                   // Return both result and txt1
+}
+
+func main() {
+	// The function returns two values, so both need to be captured
+	fmt.Println(myFunction(5, "Hello")) // Output: (10, "Hello World!")
+}
+```
+
+---
+
+#### 5. Omitting Return Values
+
+```go
+// This function still returns two values, but the caller chooses to ignore the first return value.
+
+func myFunction(x int, y string) (result int, txt1 string) {
+	result = x + x           // result is double the value of x
+	txt1 = y + " World!"     // txt1 is y appended with " World!"
+	return                   // Return both result and txt1
+}
+
+func main() {
+	// Here, the first return value (result) is omitted by using "_".
+	_, b := myFunction(5, "Hello") // Capture only the second return value (txt1)
+	fmt.Println(b)                 // Output: "Hello World!"
+}
+```
+
+---
+
+#### 6. Recursive Function Example
+
+```go
+// A recursive function that prints numbers from x up to 10.
+// The recursion stops when x equals 11.
+
+func testcount(x int) int {
+	if x == 11 {
+		return 0  // Base case: if x is 11, stop the recursion
+	}
+	fmt.Println(x)      // Print the current value of x
+	return testcount(x + 1) // Recursive call with x incremented by 1
+}
+
+func main() {
+	// Start recursion from 1
+	testcount(1) // Output: 1 2 3 4 5 6 7 8 9 10
+}
+```
+
+
+### Variadic Functions
+
+In Go, a variadic function is one that can accept a variable number of arguments. You define a variadic parameter by using `...` before the type. This allows you to pass zero or more arguments of the specified type.
+
+###### Example
+
+```go
+package main
+
+import "fmt"
+
+// Variadic function that sums up integers
+func sum(nums ...int) int {
+    total := 0
+    for _, num := range nums {
+        total += num
+    }
+    return total
+}
+
+func main() {
+    result := sum(1, 2, 3, 4, 5)
+    fmt.Println("Sum:", result) // Output: Sum: 15
+}
+```
+
+###### Explanation
+
+- `func sum(nums ...int) int` defines a function `sum` that takes a variadic parameter `nums` of type `int`.
+- Inside the function, `nums` is treated like a slice (`[]int`), so you can use range-based loops to iterate over the elements.
+- When calling `sum`, you can pass any number of integers.
+
+#### Anonymous Functions
+
+Anonymous functions, or lambda functions, are functions defined without a name. They can be used inline where they are needed, and they are often used for short-lived operations or callbacks.
+
+###### Example
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    // Anonymous function assigned to a variable
+    add := func(a, b int) int {
+        return a + b
+    }
+
+    result := add(10, 20)
+    fmt.Println("Sum:", result) // Output: Sum: 30
+
+    // Anonymous function used immediately
+    result = func(a, b int) int {
+        return a * b
+    }(5, 6)
+
+    fmt.Println("Product:", result) // Output: Product: 30
+}
+```
+
+###### Explanation
+
+- `add := func(a, b int) int { ... }` creates an anonymous function and assigns it to the variable `add`.
+- This function can then be invoked like a regular function.
+- You can also define and call an anonymous function immediately, as shown in the second part of the example.
+
+
+
+
+### Understanding the `init` Function in Go
+
+#### Overview
+
+In Go, the `init` function is a special function that is executed automatically when a package is imported. It is used for initialization tasks that need to be completed before the `main` function starts executing. The `init` function does not take any arguments and does not return any values. 
+
+#### Key Characteristics
+
+- **Execution Order**: The `init` function is executed before the `main` function.
+- **Multiple `init` Functions**: You can have multiple `init` functions in a single file, and they are executed in the order they appear.
+- **Multiple Packages**: When dealing with multiple packages, the `init` functions are executed in a specific order based on the package import hierarchy.
+
+#### Example 1: Basic Usage
+
+In this example, we demonstrate how the `init` function initializes variables before the `main` function is executed.
+
+```go
+package main
+
+import "fmt"
+
+// Package-level variables
+var greetings string
+var age int
+
+// Init function
+func init() {
+    fmt.Println("I always execute before main() function")
+    greetings = "Hello world"
+}
+
+// Main function
+func main() {
+    fmt.Println("I execute after init() function")
+    fmt.Println(greetings)
+    fmt.Printf("Go language is %d years old \n", age)
+}
+```
+
+##### Output
+
+```
+I always execute before main() function
+I execute after init() function
+Hello world
+Go language is 0 years old
+```
+
+##### Explanation
+
+- The `init` function sets the `greetings` variable before `main` executes.
+- The `main` function prints the values initialized by `init`, demonstrating that `init` executes first.
+
+#### Example 2: Multiple `init` Functions in a File
+
+You can define multiple `init` functions within the same file. They are executed in the order they are defined.
+
+```go
+package main
+
+import "fmt"
+
+// First init function
+func init() {
+    fmt.Println("<<< First >>>")
+}
+
+// Second init function
+func init() {
+    fmt.Println("<<< Second >>>")
+}
+
+// Third init function
+func init() {
+    fmt.Println("<<< Third >>>")
+}
+
+// Main function
+func main() {
+    fmt.Println("I execute after init() functions")
+}
+```
+
+##### Output
+
+```
+<<< First >>>
+<<< Second >>>
+<<< Third >>>
+I execute after init() functions
+```
+
+##### Explanation
+
+- The `init` functions are executed in the order they appear in the file.
+- The `main` function runs after all `init` functions have completed.
+
+#### Example 3: Multiple Packages with `init` Functions
+
+When working with multiple packages, `init` functions in different packages are executed in a specific order based on import dependencies.
+
+```go
+// File: a/a.go
+package a
+
+func init() {
+    println("init() function in a/a.go")
+}
+
+func Greetings() {
+    println("Hello, world from a/a.go")
+}
+
+// File: b/b.go
+package b
+
+import "fmt"
+
+func init() {
+    fmt.Println("init() function in b/b.go")
+}
+
+func Greetings() {
+    fmt.Println("Hello, world from b/b.go")
+}
+
+// File: main.go
+package main
+
+import (
+    "fmt"
+    "a" // import package a
+    "b" // import package b
+)
+
+func init() {
+    fmt.Println("init() function in main.go")
+}
+
+func main() {
+    fmt.Println("Executing main() function in main.go")
+    a.Greetings()
+    b.Greetings()
+}
+```
+
+##### Output
+
+```
+init() function in a/a.go
+init() function in b/b.go
+init() function in main.go
+Executing main() function in main.go
+Hello, world from a/a.go
+Hello, world from b/b.go
+```
+
+##### Explanation
+
+1. **Package `a`**:
+   - The `init` function in package `a` executes first, as it is the first package imported.
+
+2. **Package `b`**:
+   - The `init` function in package `b` executes next, following the import of package `b`.
+
+3. **Main Package**:
+   - The `init` function in the `main` package executes after the `init` functions in imported packages.
+
+4. **Execution Order**:
+   - The `main` function starts executing last, after all `init` functions have been completed.
+
+#### Conclusion
+
+The `init` function in Go plays a crucial role in package initialization, allowing setup tasks to be performed before the `main` function runs. It can be used in multiple ways, including defining multiple `init` functions within a file and handling initialization across multiple packages. Understanding the order of execution for `init` functions is essential for managing complex initialization logic in Go applications.
+```
