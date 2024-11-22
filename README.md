@@ -759,9 +759,9 @@ func main() {
 }
 ```
 
-Result:  2
-RECOVER Cannot divide a number by zero
-Result:  0
+>Result:  2
+>RECOVER Cannot divide a number by zero
+>Result:  0
 
 ---
 
