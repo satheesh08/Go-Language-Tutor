@@ -768,6 +768,7 @@ func main() {
 ### **Additional Switch Concepts**
 
 #### **Switch without Fallthrough:**
+eventhough 45 is < 100, it only goes to second case, to address this, use fallthrough
 ```go
 func main() {
 	i := 45
