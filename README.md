@@ -172,7 +172,6 @@ var variableName type = value;
 2. **Type Inference**
     ```go
     var a string = "Isaac"
-    var b : a  // Type is inferred by the compiler (string in this case)
     var b = "Isaac"  // Type is inferred by the compiler (string in this case)
     ```
 
