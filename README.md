@@ -767,18 +767,43 @@ func main() {
 
 ### **Additional Switch Concepts**
 
+#### **Switch without Fallthrough:**
+```go
+func main() {
+	i := 45
+
+	switch {
+	case i < 10:
+		fmt.Println("i is less than 10")
+	case i < 50:
+		fmt.Println("i is less than 50")
+	case i < 100:
+		fmt.Println("i is less than 100")
+	}
+}
+```
+
 #### **Switch with Fallthrough:**
 In Go, switch cases **do not fall through by default**. You must use the `fallthrough` keyword to explicitly continue to the next case.
 
 ```go
-switch num {
-case 1:
-    fmt.Println("One")
-    fallthrough
-case 2:
-    fmt.Println("Two")
-default:
-    fmt.Println("Default")
+package main
+
+import "fmt"
+
+func main() {
+    i := 45
+    switch {
+    case i < 10:
+        fmt.Println("i is less than 10")
+        fallthrough
+    case i < 50:
+        fmt.Println("i is less than 50")
+        fallthrough
+        fmt.Println("Not allowed")
+    case i < 100:
+        fmt.Println("i is less than 100")
+    }
 }
 ```
 
